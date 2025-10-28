@@ -16,7 +16,7 @@ function askQuestion(question: string): Promise<string> {
 async function mainMenu() {
     //*  Main Menu
     console.log(
-        "--- LoginMaster TypeScript Version ---" +
+        "--- LoginMaster TypeScript Edition ---" +
         "\n1) Iniciar Sesion" +
         "\n2) Registrarse" +
         "\n3) Salir" +
