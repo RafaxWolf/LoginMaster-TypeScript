@@ -1,16 +1,25 @@
-//* Libs
+//*  Libs
 import { User } from "../Schema/database-schema";
 import { createDB, readDB } from "./databaseSystem";
 import bcrypt from 'bcrypt';
 
+// ======================================================
+
+
+//* ============ Database creation ============
+//? <==  Database Path / File
+const DB_FILE = "./database.json";
+
+//? Database creator with Debug
+createDB(DB_FILE);
+//* ===========================================
+
 const salt_rounds = 10
 const salt = bcrypt.genSaltSync(salt_rounds)
 
-//* Database creation
-const DB_FILE = "./database.json" //? <==  Database Path / File
-createDB(DB_FILE); //? Database creator with Debug
 
 //?  ------------------ Account System ------------------
+
 //! Register
 export async function register(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
@@ -39,6 +48,7 @@ export async function register(user: string, passwd: string) {
         }
     } else {
         createDB(DB_FILE)
+        return;
     }
 }
 
@@ -47,6 +57,22 @@ export async function register(user: string, passwd: string) {
 export async function login(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {
+        const dbUser = db.users.find(u => u.name.toLowerCase() === user.toLowerCase())
+        if(!dbUser) {
+            console.error(`[!] El usuario ${user} No existe en la base de datos!`)
+            return;
+        }
 
+        const passwdMatch = await bcrypt.compare(passwd, dbUser.password)
+        if(!passwdMatch) {
+            console.error("[!] Contraseña incorrecta!")
+            return;
+        }
+
+        console.log(`[+] Sesion iniciada como: ${user}`)
+
+    } else {
+        createDB(DB_FILE)
+        return;
     }
 }
