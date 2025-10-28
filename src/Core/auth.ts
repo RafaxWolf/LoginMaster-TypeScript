@@ -1,13 +1,14 @@
 //* Libs
 import { User } from "../Schema/database-schema";
 import { createDB, readDB } from "./databaseSystem";
-//import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
+const salt_rounds = 10
+const salt = bcrypt.genSaltSync(salt_rounds)
 
 //* Database creation
 const DB_FILE = "./database.json" //? <==  Database Path / File
 createDB(DB_FILE); //? Database creator with Debug
-
 
 //?  ------------------ Account System ------------------
 //! Register
@@ -15,29 +16,29 @@ export async function register(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {
         try {
-            const userSearch = db.users.find((dbuser) => dbuser.name.toLowerCase() === user.toLowerCase());
-            if(userSearch) {
+            const existingUser = db.users.find((dbuser) => dbuser.name.toLowerCase() === user.toLowerCase());
+            if(existingUser) {
                 console.error("[!] El usuario ya existe en la base de datos!")
-            } else {
-                const allID = db.users.map(user => user.id);
-                console.log(allID)
-    
-                const newID = allID.length + 1 || 1
-                console.log(newID)
-    
-                /* const hashedPasswd = "asd"
-    
-                const userData: User = {
-                    id: newID,
-                    name: user,
-                    password: hashedPasswd,
-                    createdAt: Date.now()
-                } */
+                return;
             }
+
+            const hashedPasswd = await bcrypt.hash(passwd, salt)
+            const newID = db.users.length > 0 ? db.users[db.users.length - 1].id + 1 : 1;
+            
+            const newUser: User = {
+                id: newID,
+                name: user,
+                password: hashedPasswd,
+                createdAt: Date.now()
+            }
+
+            db.users.push(newUser)
+            console.log(`[+] El usuario: ${user} ha sido creado con exito!`)
         } catch (e) {
-            console.error(e)
+            console.error(`[!] Ha ocurrido un error:\n${e}`)
         }
-        
+    } else {
+        createDB(DB_FILE)
     }
 }
 
