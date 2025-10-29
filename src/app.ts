@@ -13,8 +13,8 @@ function askQuestion(question: string): Promise<string> {
     });
 }
 
+//*  Main Menu
 async function mainMenu() {
-    //*  Main Menu
     console.log(
         "--- LoginMaster TypeScript Edition ---" +
         "\n1) Iniciar Sesion" +
@@ -22,15 +22,16 @@ async function mainMenu() {
         "\n3) Salir" +
         "\n(Para elegir una opcion escriba el numero de esta)"
     )
-    const opt = await askQuestion(">> ")
+    const optStr = await askQuestion(">> ")
 
-    const numOpt = Number(opt)
+    const opt = Number(optStr)
 
-    if(isNaN(numOpt)) {
+    if(isNaN(opt)) {
         console.error("[-] Error: Opcion seleccionada no numerica!")
         return true
     }
-    switch (numOpt){
+
+    switch (opt){
         case 1:
             let user = await askQuestion("[+] Ingrese Usuario: ");
             let passwd = await askQuestion("[+] Ingrese Contraseña: ");   
@@ -53,6 +54,8 @@ async function mainMenu() {
     }
     return true;
 }
+
+//  ==============================================================
 
 async function main() {
     let loop = true;
