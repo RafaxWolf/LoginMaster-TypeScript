@@ -59,13 +59,13 @@ export async function login(user: string, passwd: string) {
     if (db) {
         const dbUser = db.users.find(u => u.name.toLowerCase() === user.toLowerCase())
         if(!dbUser) {
-            console.error(`[!] El usuario ${user} No existe en la base de datos!`)
+            console.error(`[!] Usuario y/o contraseña incorrectos!`)
             return;
         }
 
         const passwdMatch = await bcrypt.compare(passwd, dbUser.password)
         if(!passwdMatch) {
-            console.error("[!] Contraseña incorrecta!")
+            console.error("[!] Usuario y/o contraseña incorrectos!")
             return;
         }
 
