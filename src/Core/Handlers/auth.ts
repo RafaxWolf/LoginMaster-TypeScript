@@ -23,14 +23,16 @@ export async function register(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {
         try {
-            const existingUser = db.users.find((dbuser) => dbuser.name.toLowerCase() === user.toLowerCase());
+            const existingUser = db.users.find(
+                (dbuser) => dbuser.name.toLowerCase() === user.toLowerCase()
+            );
             if(existingUser) {
                 console.error("[!] El usuario ya existe en la base de datos!")
                 return;
             }
 
-            const hashedPasswd = await bcrypt.hash(passwd, salt)
             const newID = db.users.length > 0 ? db.users[db.users.length - 1].id + 1 : 1;
+            const hashedPasswd = await bcrypt.hash(passwd, salt)
             
             const newUser: User = {
                 id: newID,
@@ -56,7 +58,9 @@ export async function register(user: string, passwd: string) {
 export async function login(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {
-        const dbUser = db.users.find(u => u.name.toLowerCase() === user.toLowerCase())
+        const dbUser = db.users.find(
+            u => u.name.toLowerCase() === user.toLowerCase()
+        )
         if(!dbUser) {
             console.error(`[!] Usuario y/o contraseña incorrectos!`)
             return;
@@ -71,7 +75,7 @@ export async function login(user: string, passwd: string) {
         console.log(`[+] Sesion iniciada como: ${user}`)
 
     } else {
-        createDB(DB_FILE)
+        createDB(DB_FILE, true)
         return;
     }
 }
