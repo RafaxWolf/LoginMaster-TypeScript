@@ -6,7 +6,7 @@
   "scripts": {
     "build": "echo \"Building...\" && tsc",
     "dev": "ts-node src/app.ts",
-    "run": "tsc && node ."
+    "start": "tsc && node ."
   },
   "keywords": [],
   "author": "TheHiddenWolf",

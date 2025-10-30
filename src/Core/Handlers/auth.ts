@@ -5,11 +5,11 @@ import * as bcrypt from 'bcrypt';
 
 
 //* ============ Database creation ============
-//? Database Path / File
-const DB_FILE = "./database.json";
+    //? Database Path / File
+    const DB_FILE = "./database.json";
 
-//? Database creator with Debug
-createDB(DB_FILE);
+    //? Database creator
+    createDB(DB_FILE);
 //* ===========================================
 
 
