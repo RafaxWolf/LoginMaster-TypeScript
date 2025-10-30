@@ -1,26 +1,15 @@
 //* Libs
-import * as readline from 'node:readline'
-import { register, login } from './Core/auth'
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
-
-function askQuestion(question: string): Promise<string> {
-    return new Promise((resolve) => {
-        rl.question(question, (r) => resolve(r.trim()));
-    });
-}
+import { register, login } from './Core/Handlers/auth';
+import { askQuestion } from './Core/Handlers/options';
 
 //*  Main Menu
 async function mainMenu() {
     console.log(
-        "--- LoginMaster TypeScript Edition ---" +
+        "\n--- LoginMaster TypeScript Edition ---" +
         "\n1) Iniciar Sesion" +
         "\n2) Registrarse" +
         "\n3) Salir" +
-        "\n(Para elegir una opcion escriba el numero de esta)"
+        "\n\n(Para elegir una opcion escriba el numero de esta)"
     )
     const optStr = await askQuestion(">> ")
 
@@ -33,12 +22,14 @@ async function mainMenu() {
 
     switch (opt){
         case 1:
+            console.log()
             let user = await askQuestion("[+] Ingrese Usuario: ");
             let passwd = await askQuestion("[+] Ingrese Contraseña: ");   
             await login(String(user),String(passwd));
         break
                     
         case 2:
+            console.log()
             let newUser = await askQuestion("[+] Ingrese nuevo Usuario: ");
             let newPasswd = await askQuestion("[+] Ingrese nueva Contraseña: ");
             await register(String(newUser),String(newPasswd));
@@ -46,7 +37,7 @@ async function mainMenu() {
                     
         case 3:
             console.log("[+] Saliendo...")
-            return false
+            return false;
 
         default:
             console.log("[!] Opcion seleccionada no valida.")
@@ -62,6 +53,7 @@ async function main() {
     while (loop) {
         loop = await mainMenu();
     }
+    process.exit(0);
 }
 
 main();

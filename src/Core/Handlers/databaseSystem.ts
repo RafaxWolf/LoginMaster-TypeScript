@@ -1,6 +1,6 @@
 //*  Libs
 import { promises as fs } from 'fs';
-import { Database } from '../Schema/database-schema';
+import { Database } from '../../Schema/database-schema';
 
 
 //*  CreateDB
