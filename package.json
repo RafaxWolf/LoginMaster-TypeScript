@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "loginmaster-typescript",
   "version": "1.0.0",
   "description": "build/app.js",
   "main": "build/app.js",
@@ -9,7 +9,7 @@
     "run": "tsc && node ."
   },
   "keywords": [],
-  "author": "",
+  "author": "TheHiddenWolf",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
