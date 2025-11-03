@@ -19,6 +19,24 @@ const salt = bcrypt.genSaltSync(salt_rounds)
 //?  ------------------ Account System ------------------
 
 //! Register
+/**
+ * Creates a new valid user from a template and registers it in the database.
+ * 
+ * @param user Username of the new user.
+ * @param passwd Password of the new user (it will be hashed later on).
+ * @returns If fails to create the user it will return to the main menu.
+ * 
+ * @example
+ * import { register } from './Core/Handlers/auth.ts';
+ * 
+ * let user = "Harley"
+ * let password = "CorpCLHarley"
+ * 
+ * (async () => {
+ *     register(user,passwd) //<= Creates the new user to the Database
+ * });
+ * 
+ */
 export async function register(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {
@@ -55,6 +73,12 @@ export async function register(user: string, passwd: string) {
 
 
 //! Login
+/**
+ * 
+ * @param user 
+ * @param passwd 
+ * @returns 
+ */
 export async function login(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {

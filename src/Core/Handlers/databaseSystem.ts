@@ -20,7 +20,7 @@ export async function createDB(path: string, debug?: boolean) {
 
     } catch {
         try{
-            //* New database and it's data
+            //* New database without data in it.
             const newDB = JSON.stringify({}, null, 4)
 
             if (debug) console.log(newDB)

@@ -25,7 +25,7 @@ async function mainMenu() {
             console.log()
             let user = await askQuestion("[+] Ingrese Usuario: ");
             let passwd = await askQuestion("[+] Ingrese Contraseña: ");   
-            await login(String(user),String(passwd));
+            await login(user,passwd);
         break
                     
         case 2:
