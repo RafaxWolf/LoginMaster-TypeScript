@@ -1,5 +1,5 @@
 //*  Libs
-import { User } from "../../Schema/database-schema";
+import { Database, User } from "../../Schema/database-schema";
 import { createDB, readDB } from "./databaseSystem";
 import * as bcrypt from 'bcrypt';
 
@@ -40,31 +40,26 @@ const salt = bcrypt.genSaltSync(salt_rounds)
 export async function register(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {
-        try {
-            const existingUser = db.users.find(
-                (dbuser) => dbuser.name.toLowerCase() === user.toLowerCase()
-            );
-            if(existingUser) {
-                console.error("[!] El usuario ya existe en la base de datos!")
-                return;
-            }
-
-            const newID = db.users.length > 0 ? db.users[db.users.length - 1].id + 1 : 1;
-            const hashedPasswd = await bcrypt.hash(passwd, salt)
-            
-            const newUser: User = {
-                id: newID,
-                name: user,
-                password: hashedPasswd,
-                createdAt: Date.now()
-            }
-
-            db.users.push(newUser)
-            console.log(`[+] El usuario: ${user} ha sido creado con exito!`)
-        } catch (e) {
-            console.log()
-            console.error(`[!] Ha ocurrido un error:\n${e}`)
+        const existingUser = db.users.find(
+            (dbuser) => dbuser.name.toLowerCase() === user.toLowerCase()
+        );
+        if(existingUser) {
+            console.error("[!] El usuario ya existe en la base de datos!")
+            return;
         }
+
+        const newID = db.users.length > 0 ? db.users[db.users.length - 1].id + 1 : 1;
+        const hashedPasswd = await bcrypt.hash(passwd, salt)
+            
+        const newUser: User = {
+            id: newID,
+            name: user,
+            password: hashedPasswd,
+            createdAt: Date.now()
+        }
+
+        db.users.push(newUser)
+        console.log(`[+] El usuario: ${user} ha sido creado con exito!`)
     } else {
         createDB(DB_FILE)
         return;

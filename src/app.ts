@@ -12,7 +12,6 @@ async function mainMenu() {
         "\n\n(Para elegir una opcion escriba el numero de esta)"
     )
     const optStr = await askQuestion(">> ")
-
     const opt = Number(optStr)
 
     if(isNaN(opt)) {

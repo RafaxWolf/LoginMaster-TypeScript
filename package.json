@@ -1,11 +1,12 @@
 {
   "name": "loginmaster-typescript",
-  "version": "1.0.0",
-  "description": "build/app.js",
+  "version": "1.3",
+  "description": "LoginMaster TypeScript Edition",
   "main": "build/app.js",
   "scripts": {
-    "build": "echo \"Building...\" && tsc",
-    "dev": "ts-node src/app.ts",
+    "build": "echo Building... && tsc",
+    "delbuild": "echo Deleting... && powershell rm -r ./build/",
+    "dev": "ts-node ./src/app.ts",
     "start": "tsc && node ."
   },
   "keywords": [],
