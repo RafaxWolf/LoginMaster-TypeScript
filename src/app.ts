@@ -1,6 +1,6 @@
 //* Libs
-import { register, login } from './Core/Handlers/auth';
-import { askQuestion } from './Core/Handlers/options';
+import { register, login } from './Core/auth';
+import { closePrompt, prompt } from './Core/Handlers/prompt';
 
 //*  Main Menu
 async function mainMenu() {
@@ -11,7 +11,7 @@ async function mainMenu() {
         "\n3) Salir" +
         "\n\n(Para elegir una opcion escriba el numero de esta)"
     )
-    const optStr = await askQuestion(">> ")
+    const optStr = await prompt(">> ")
     const opt = Number(optStr)
 
     if(isNaN(opt)) {
@@ -20,19 +20,21 @@ async function mainMenu() {
     }
 
     switch (opt){
-        case 1:
+        case 1: {
             console.log()
-            let user = await askQuestion("[+] Ingrese Usuario: ");
-            let passwd = await askQuestion("[+] Ingrese Contraseña: ");   
+            let user = await prompt("[+] Ingrese Usuario: ");
+            let passwd = await prompt("[+] Ingrese Contraseña: ");   
             await login(String(user),String(passwd));
-        break
+            break
+        }
                     
-        case 2:
+        case 2: {
             console.log()
-            let newUser = await askQuestion("[+] Ingrese nuevo Usuario: ");
-            let newPasswd = await askQuestion("[+] Ingrese nueva Contraseña: ");
+            let newUser = await prompt("[+] Ingrese nuevo Usuario: ");
+            let newPasswd = await prompt("[+] Ingrese nueva Contraseña: ");
             await register(String(newUser),String(newPasswd));
-        break
+            break
+        }
                     
         case 3:
             console.log("[+] Saliendo...")
@@ -40,7 +42,7 @@ async function mainMenu() {
 
         default:
             console.log("[!] Opcion seleccionada no valida.")
-        break
+            break
     }
     return true;
 }
@@ -52,7 +54,7 @@ async function main() {
     while (loop) {
         loop = await mainMenu();
     }
-    process.exit(0);
+    closePrompt()
 }
 
 main();

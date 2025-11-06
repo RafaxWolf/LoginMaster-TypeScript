@@ -17,7 +17,8 @@ export async function createDB(dbpath: string, debug?: boolean) {
         if (debug) console.log(chalk.cyanBright("\n[+] La base de datos ya existe."))
 
     } catch {
-        try{
+        try {
+            
             //! Deprecated
             /* 
             //* New database without data in it.

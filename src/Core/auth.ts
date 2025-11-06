@@ -1,6 +1,6 @@
 //*  Libs
-import { Database, User } from "../../Schema/database-schema";
-import { createDB, readDB } from "./databaseSystem";
+import { User } from "../Schema/database-schema";
+import { createDB, readDB, saveDB } from "./Handlers/database-handler";
 import * as bcrypt from 'bcrypt';
 
 
@@ -29,8 +29,8 @@ const salt = bcrypt.genSaltSync(salt_rounds)
  * @example
  * import { register } from './Core/Handlers/auth.ts';
  * 
- * let user = "Harley"
- * let password = "CorpCLHarley"
+ * let user = "User"
+ * let password = "Password"
  * 
  * (async () => {
  *     register(user,passwd) //<= Creates the new user to the Database
@@ -40,15 +40,13 @@ const salt = bcrypt.genSaltSync(salt_rounds)
 export async function register(user: string, passwd: string) {
     const db = await readDB(DB_FILE)
     if (db) {
-        const existingUser = db.users.find(
-            (dbuser) => dbuser.name.toLowerCase() === user.toLowerCase()
-        );
+        const existingUser = db.users.some(dbuser => dbuser.name.toLowerCase() === user.toLowerCase());
         if(existingUser) {
             console.error("[!] El usuario ya existe en la base de datos!")
             return;
         }
 
-        const newID = db.users.length > 0 ? db.users[db.users.length - 1].id + 1 : 1;
+        const newID = db.users.length + 1
         const hashedPasswd = await bcrypt.hash(passwd, salt)
             
         const newUser: User = {
@@ -59,6 +57,7 @@ export async function register(user: string, passwd: string) {
         }
 
         db.users.push(newUser)
+        await saveDB(DB_FILE, db)
         console.log(`[+] El usuario: ${user} ha sido creado con exito!`)
     } else {
         createDB(DB_FILE)
